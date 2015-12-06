@@ -133,4 +133,13 @@ object List {
       case (Cons(x, xs), Cons(y, ys)) => Cons(f(x, y), zipWith(xs, ys)(f))
     }
   }
+
+  // Exercise 3.24, p44
+  @tailrec
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+    sup match {
+      case Nil => false
+      case _ => foldLeft(zipWith(sub, sup)(_ == _), true)(_ && _) || hasSubsequence(tail(sup), sub)
+    }
+  }
 }

@@ -68,4 +68,6 @@ List.addLists(List(1,2,3), List(9,8,7))
 
 // Exercise 3.23, p43
 List.zipWith(List(1,2,3), List("2", "3", "4"))((a,b) => a + b.toInt)
-
+// Exercise 3.24, p44
+List.hasSubsequence(List(1,2,3,4,5), List(1,2,3))
+List.hasSubsequence(List(1,2,3,4,5), List(3,2,1))
