@@ -71,3 +71,18 @@ List.zipWith(List(1,2,3), List("2", "3", "4"))((a,b) => a + b.toInt)
 // Exercise 3.24, p44
 List.hasSubsequence(List(1,2,3,4,5), List(1,2,3))
 List.hasSubsequence(List(1,2,3,4,5), List(3,2,1))
+// Tree exercises starting on p46
+
+// Exercise 3.25, p46
+val t1 = Branch(
+  Branch(
+    Leaf("a"),
+    Leaf("b")
+  ),
+  Branch(
+    Leaf("c"),
+    Leaf("d")
+  )
+)
+
+Tree.size(t1)
