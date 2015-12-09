@@ -137,9 +137,13 @@ object List {
   // Exercise 3.24, p44
   @tailrec
   def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
-    sup match {
-      case Nil => false
-      case _ => foldLeft(zipWith(sub, sup)(_ == _), true)(_ && _) || hasSubsequence(tail(sup), sub)
+
+    (sup, sub) match {
+      case (Nil, Nil) => true
+      case (Nil, _) => false
+      case (_, Nil) => true
+      case (Cons(h, t), Cons(h2, t2)) if h == h2 => hasSubsequence(t, t2)
+      case (Cons(h, t), Cons(h2, t2)) if h != h2 => hasSubsequence(t, Cons(h2, t2))
     }
   }
 }

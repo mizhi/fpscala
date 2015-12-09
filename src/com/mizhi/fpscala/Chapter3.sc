@@ -52,31 +52,28 @@ List.foldRight2(List(1,2,3), Nil:List[Int])((a, b) => Cons(a + 1, b))
 
 // Exercise 3.17, p42
 List.foldRight2(List(1.0,2.0,3.0), Nil:List[String])((a, b) => Cons(a.toString, b))
-
 // Exercise 3.18, p42
 List.map(List(1.0, 2.0, 3.0))(n => n.toString)
-
 // Exercise 3.19, p42
 List.filter(List(1,2,3,4,5))(_ < 4)
 
 // Exercise 3.20, p42
 List.flatMap(List(1,2,3))(i => List(i,i))
-
 // Exercise 3.21, p43
 List.filter2(List(1,2,3,4,5))(_ < 4)
-
 // Exercise 3.22, p43
 List.addLists(List(1,2,3), List(9,8,7))
-
 // Exercise 3.23, p43
 List.zipWith(List(1,2,3), List("2", "3", "4"))((a,b) => a + b.toInt)
-
 // Exercise 3.24, p44
 List.hasSubsequence(List(1,2,3,4,5), List(1,2,3))
+List.hasSubsequence(List(1,2,3,4,5), List(2,3,4))
+List.hasSubsequence(List(1,2,3,4,5), List(3,4,5))
 List.hasSubsequence(List(1,2,3,4,5), List(3,2,1))
 List.hasSubsequence(List(1,2,3,4,5), List())
 List.hasSubsequence(List(), List())
-List.hasSubsequence(List(1,2,3), List(1,2,3,4,5))
+List.hasSubsequence(List(1,2,3,4,5), List(1,2,3,4,5,6))
+List.hasSubsequence(List(1,2,3,4,5), List(1,2,3,4,5))
 
 // Tree exercises starting on p46
 // Exercise 3.25, p46
@@ -115,10 +112,8 @@ Tree.maximum(t2)
 
 // Exercise 3.27, p46
 Tree.depth(t2)
-
 // Exercise 3.28, p46
 Tree.map(t2)(_ * 2)
-
 // Exercise 3.29, p47
 Tree.size2(t1)
 Tree.maximum2(t2)
