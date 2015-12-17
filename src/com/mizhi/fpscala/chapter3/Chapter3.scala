@@ -1,4 +1,4 @@
-package com.mizhi.fpscala
+package com.mizhi.fpscala.chapter3
 
 import scala.annotation.tailrec
 

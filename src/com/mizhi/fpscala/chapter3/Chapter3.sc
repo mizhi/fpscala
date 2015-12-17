@@ -1,5 +1,3 @@
-import com.mizhi.fpscala._
-
 // Exercise 3.2, p35
 val l = List("foo", "bar", "baz")
 List.tail(List.tail(l))
@@ -74,7 +72,6 @@ List.hasSubsequence(List(1,2,3,4,5), List())
 List.hasSubsequence(List(), List())
 List.hasSubsequence(List(1,2,3,4,5), List(1,2,3,4,5,6))
 List.hasSubsequence(List(1,2,3,4,5), List(1,2,3,4,5))
-
 // Tree exercises starting on p46
 // Exercise 3.25, p46
 val t1 = Branch(

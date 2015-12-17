@@ -1,4 +1,4 @@
-import com.mizhi.fpscala.Chapter2._
+import com.mizhi.fpscala.chapter2.Chapter2._
 
 factorial(5)
 

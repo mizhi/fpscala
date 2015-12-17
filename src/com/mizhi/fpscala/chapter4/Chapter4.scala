@@ -1,5 +1,6 @@
-package com.mizhi.fpscala
+package com.mizhi.fpscala.chapter4
 
+import scala.collection.immutable.List
 
 // Exercise 4.1, p54
 sealed trait Option[+A] {
@@ -26,3 +27,19 @@ case object None extends Option[Nothing] {
   override def filter(f: (Nothing) => Boolean): Option[Nothing] = None
 }
 
+object Option {
+  // using type inference
+  def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
+
+  // being explicit
+  def lift2[A,B](f: A => B): Option[A] => Option[B] = (a: Option[A]) => a map f
+
+  // Exercise 4.4, p59
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = {
+    a match {
+      case Nil => Some(Nil)
+      case None :: tail => None
+      case Some(head) :: tail => sequence(tail).map(head :: _)
+    }
+  }
+}
