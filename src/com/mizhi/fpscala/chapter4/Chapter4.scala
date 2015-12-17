@@ -34,6 +34,11 @@ object Option {
   // being explicit
   def lift2[A,B](f: A => B): Option[A] => Option[B] = (a: Option[A]) => a map f
 
+  // Exercise 4.3, p58
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = {
+    a.flatMap(aa => b.map(bb => f(aa, bb)))
+  }
+
   // Exercise 4.4, p59
   def sequence[A](a: List[Option[A]]): Option[List[A]] = {
     a match {
@@ -41,5 +46,15 @@ object Option {
       case None :: tail => None
       case Some(head) :: tail => sequence(tail).map(head :: _)
     }
+  }
+
+  def sequence2[A](a: List[Option[A]]): Option[List[A]] = {
+    a.foldRight[Option[List[A]]](Some(List()))(
+      (aa: Option[A], bb: Option[List[A]]) => aa.flatMap(aaa => bb.map(bbb => aaa :: bbb))
+    )
+  }
+
+  def sequence3[A](a: List[Option[A]]): Option[List[A]] = {
+    a.foldRight[Option[List[A]]](Some(Nil))((aa, bb) => map2(aa, bb)(_ :: _))
   }
 }
