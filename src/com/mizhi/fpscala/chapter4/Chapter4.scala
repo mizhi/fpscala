@@ -28,6 +28,11 @@ case object None extends Option[Nothing] {
 }
 
 object Option {
+  def Try[A](a: => A): Option[A] = {
+    try Some(a)
+    catch { case e: Exception => None }
+  }
+
   // using type inference
   def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
 
@@ -40,21 +45,85 @@ object Option {
   }
 
   // Exercise 4.4, p59
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = {
-    a match {
+  def sequence[A](as: List[Option[A]]): Option[List[A]] = {
+    as match {
       case Nil => Some(Nil)
       case None :: tail => None
       case Some(head) :: tail => sequence(tail).map(head :: _)
     }
   }
 
-  def sequence2[A](a: List[Option[A]]): Option[List[A]] = {
-    a.foldRight[Option[List[A]]](Some(List()))(
+  def sequence2[A](as: List[Option[A]]): Option[List[A]] = {
+    as.foldRight[Option[List[A]]](Some(List()))(
       (aa: Option[A], bb: Option[List[A]]) => aa.flatMap(aaa => bb.map(bbb => aaa :: bbb))
     )
   }
 
-  def sequence3[A](a: List[Option[A]]): Option[List[A]] = {
-    a.foldRight[Option[List[A]]](Some(Nil))((aa, bb) => map2(aa, bb)(_ :: _))
+  def sequence3[A](as: List[Option[A]]): Option[List[A]] = {
+    as.foldRight[Option[List[A]]](Some(Nil))((aa, bb) => map2(aa, bb)(_ :: _))
+  }
+
+  // Exercise 4.5, p59
+  def traverse[A, B](aa: List[A])(f: A => Option[B]): Option[List[B]] = {
+    sequence3(aa.map(f))
+  }
+
+  def traverse2[A,B](as: List[A])(f: A => Option[B]): Option[List[B]] = {
+    as match {
+      case Nil => Some(Nil)
+      case head :: tail => map2(f(head), traverse2(tail)(f))(_ :: _)
+    }
+  }
+
+  def sequence4[A](as: List[Option[A]]): Option[List[A]] = {
+    traverse2(as)(a => a)
+  }
+}
+
+sealed trait Either[+E, +A] {
+  def map[B](f: A => B): Either[E, B] = {
+    this match {
+      case Left(e) => Left(e)
+      case Right(a) => Right(f(a))
+    }
+  }
+
+  def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = {
+    this match {
+      case Left(e) => Left(e)
+      case Right(a) => f(a)
+    }
+  }
+
+  def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = {
+    this match {
+      case Left(_) => b
+      case Right(b) => Right(b)
+    }
+  }
+
+  def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = {
+    this match {
+      case Left(e) => Left(e)
+      case Right(a) => b.map(f(a, _))
+    }
+  }
+}
+
+case class Left[+E](value: E) extends Either[E, Nothing]
+case class Right[+A](value: A) extends Either[Nothing, A]
+
+object Either {
+
+  // Exercise 4.7, p62
+  def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] = {
+    traverse(es)(e => e)
+  }
+
+  def traverse[E, A, B](as: List[A])(f: A => Either[E, B]): Either[E, List[B]] = {
+    as match {
+      case Nil => Right(Nil)
+      case h :: t => f(h).map2(traverse(t)(f))(_ :: _)
+    }
   }
 }
