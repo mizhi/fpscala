@@ -54,7 +54,7 @@ sealed trait Stream[+A] {
   }
 
   def forAll(p: A => Boolean): Boolean = {
-    foldRight(true)((h, t) => p(h) && t)
+    foldRight(true)((a, b) => p(a) && b)
   }
 
   def forAll2(p: A => Boolean): Boolean = {
@@ -62,6 +62,11 @@ sealed trait Stream[+A] {
       case Empty => true
       case Cons(h, t) => p(h()) && t().forAll(p)
     }
+  }
+
+  // Exercise 5.5, p71
+  def takeWhile2(p: A => Boolean): Stream[A] = {
+    foldRight(Empty:Stream[A])((a, b) => if (p(a)) Stream.cons(a, b) else Empty)
   }
 }
 case object Empty extends Stream[Nothing]

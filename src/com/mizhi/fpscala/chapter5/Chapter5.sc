@@ -20,3 +20,5 @@ si.forAll(_ < 10)
 
 si.forAll2(_ % 2 == 0)
 
+// Exercise 5.5, p71
+si.takeWhile2(_ < 3).toList
