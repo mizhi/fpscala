@@ -14,4 +14,9 @@ si.drop(2).toList
 // Exercise 5.3, p70
 si.takeWhile(_ < 4).toList
 
+// Exercise 5.4, p71
+si.forAll(_ % 2 == 0)
+si.forAll(_ < 10)
+
+si.forAll2(_ % 2 == 0)
 
