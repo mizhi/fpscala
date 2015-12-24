@@ -26,3 +26,9 @@ si.takeWhile2(_ < 3).toList
 // Exercise 5.6, p71
 si.headOption2
 Empty.headOption2
+
+// Exercise 5.7, p72
+si.map(_ * 2).toList
+si.filter(_ % 2 == 0).toList
+si.append(Stream(9,8,7)).toList
+si.flatMap(a => Stream(a * 2)).toList
