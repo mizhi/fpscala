@@ -47,3 +47,4 @@ from10.take(10).toList
 // Exercise 5.10, p75
 Stream.fibs.take(10).toList
 Stream.fibs2.take(10).toList
+
