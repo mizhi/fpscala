@@ -39,3 +39,7 @@ ones.take(10).toList
 // Exercise 5.8, p74
 val as = Stream.constant('A')
 as.take(10).toList
+
+// Exercise 5.9, p74
+val from10 = Stream.from(10)
+from10.take(10).toList

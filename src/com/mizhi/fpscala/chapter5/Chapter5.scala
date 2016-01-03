@@ -100,5 +100,6 @@ object Stream {
   // Exercise 5.8, p74
   def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
 
-
+  // Exercise 5.9, p74
+  def from(n: Int): Stream[Int] = Stream.cons(n, from(n+1))
 }
