@@ -121,4 +121,10 @@ object Stream {
       case Some((a, s)) => Stream.cons(a, unfold(s)(f))
     }
   }
+
+  // Exercise 5.12, p75
+  def ufones: Stream[Int] = unfold(())(_ => Some((1, ())))
+  def ufconstant[A](a: A): Stream[A] = unfold(())(_ => Some((a, ())))
+  def uffrom(n: Int): Stream[Int] = unfold(n)(from => Some((from, from + 1)))
+  def uffibs: Stream[Int] = unfold((0, 1))(ab => Some((ab._1, (ab._2, ab._1 + ab._2))))
 }

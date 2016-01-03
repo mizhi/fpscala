@@ -48,3 +48,8 @@ from10.take(10).toList
 Stream.fibs.take(10).toList
 Stream.fibs2.take(10).toList
 
+// Exercise 5.12, p75
+Stream.ufones.take(10).toList
+Stream.ufconstant('A').take(10).toList
+Stream.uffrom(10).take(10).toList
+Stream.uffibs.take(10).toList
