@@ -32,3 +32,10 @@ si.map(_ * 2).toList
 si.filter(_ % 2 == 0).toList
 si.append(Stream(9,8,7)).toList
 si.flatMap(a => Stream(a * 2)).toList
+
+val ones: Stream[Int] = Stream.cons(1, ones)
+ones.take(10).toList
+
+// Exercise 5.8, p74
+val as = Stream.constant('A')
+as.take(10).toList

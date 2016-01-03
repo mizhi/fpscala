@@ -97,4 +97,8 @@ object Stream {
     else cons(as.head, apply(as.tail: _*))
   }
 
+  // Exercise 5.8, p74
+  def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
+
+
 }
