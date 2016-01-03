@@ -102,4 +102,15 @@ object Stream {
 
   // Exercise 5.9, p74
   def from(n: Int): Stream[Int] = Stream.cons(n, from(n+1))
+
+  // Exercise 5.10, p75
+  def fibs: Stream[Int] = {
+    def _fibs(a: Int, b: Int): Stream[Int] = Stream.cons(b, _fibs(b, a + b))
+    Stream.cons(0, _fibs(0, 1))
+  }
+
+  def fibs2: Stream[Int] = {
+    def _fibs2(a: Int, b: Int): Stream[Int] = Stream.cons(a, _fibs2(b, a + b))
+    _fibs2(0, 1)
+  }
 }
