@@ -53,3 +53,16 @@ Stream.ufones.take(10).toList
 Stream.ufconstant('A').take(10).toList
 Stream.uffrom(10).take(10).toList
 Stream.uffibs.take(10).toList
+
+// Exercise 5.13, p76
+si.map2(_ * 2).toList
+Stream.ufones.take2(10).toList
+Stream.ufones.take2(1).toList
+Stream.ufones.take(0).toList
+si.takeWhile3(_ < 3).toList
+
+val si2 = Stream('A', 'B', 'C')
+
+si.zipWith(si2)( (n, c) => (n, c)).toList
+
+si.zipAll(si2).toList

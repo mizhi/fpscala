@@ -79,6 +79,46 @@ sealed trait Stream[+A] {
   def filter(p: A => Boolean): Stream[A] = foldRight(Empty: Stream[A])((a, b) => if (p(a)) Stream.cons(a, b) else b)
   def append[B >: A](bs: => Stream[B]): Stream[B] = foldRight(bs)((a, b) => Stream.cons(a, b))
   def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(Empty: Stream[B])((a, b) => f(a).append(b))
+
+  // Exercise 5.13, p75
+  def map2[B](f: A => B): Stream[B] = {
+    Stream.unfold(this) {
+      case Empty => None
+      case Cons(hd, tl) => Some((f(hd()), tl()))
+    }
+  }
+
+  def take2(n: Int): Stream[A] = {
+    Stream.unfold((this, n)) {
+      case (Cons(hd, tl), _n) if _n > 0 => Some((hd(), (tl(), _n - 1)))
+      case _ => None
+    }
+  }
+
+  def takeWhile3(p: A => Boolean): Stream[A] = {
+    Stream.unfold(this) {
+      case Cons(hd, tl) if p(hd()) => Some((hd(), tl()))
+      case _ => None
+    }
+  }
+
+  def zipWith[B,C](bs: Stream[B])(f: (A, B) => C): Stream[C] = {
+    Stream.unfold((this, bs)) {
+      case (_, Empty) => None
+      case (Empty, _) => None
+      case (Cons(ahd, atl), Cons(bhd, btl)) =>
+        Some((f(ahd(), bhd()), (atl(), btl())))
+    }
+  }
+
+  def zipAll[B](bs: Stream[B]): Stream[(Option[A], Option[B])] = {
+    Stream.unfold((this, bs)) {
+      case (Cons(ahd, atl), Empty) => Some(((Some(ahd()), None), (atl(), Empty)))
+      case (Empty, Cons(bhd, btl)) => Some((None, Some(bhd())), (Empty, btl()))
+      case (Cons(ahd, atl), Cons(bhd, btl)) => Some((Some(ahd()), Some(bhd())), (atl(), btl()))
+      case _ => None
+    }
+  }
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
