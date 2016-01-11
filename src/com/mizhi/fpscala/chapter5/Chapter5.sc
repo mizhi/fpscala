@@ -72,3 +72,7 @@ val s3 = Stream(1,2,3)
 val s4 = Stream(1,2,3,4,5)
 s3.startsWith(s4)
 s4.startsWith(s3)
+
+// 5.15, p76
+s3.tails.map(_.toList).toList
+s3.tails2.map(_.toList).toList
