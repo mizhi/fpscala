@@ -66,3 +66,9 @@ val si2 = Stream('A', 'B', 'C')
 si.zipWith(si2)( (n, c) => (n, c)).toList
 
 si.zipAll(si2).toList
+
+// 5.14, p76
+val s3 = Stream(1,2,3)
+val s4 = Stream(1,2,3,4,5)
+s3.startsWith(s4)
+s4.startsWith(s3)
