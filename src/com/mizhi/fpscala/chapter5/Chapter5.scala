@@ -129,6 +129,17 @@ sealed trait Stream[+A] {
     }.forAll(p => p._1 == p._2)
   }
 
+  def startsWith2[A](bs: Stream[A]): Boolean = {
+    zipAll(bs).takeWhile {
+      case (_, Some(b)) => true
+      case (_, None) => false
+    }.forAll(p => p._1 == p._2)
+  }
+
+  def startsWith3[A](bs: Stream[A]): Boolean = {
+    zipAll(bs).takeWhile(!_._2.isEmpty).forAll(p => p._1 == p._2)
+  }
+
   // 5.15, p76
   def tails: Stream[Stream[A]] = {
     Stream.unfold(this) {
