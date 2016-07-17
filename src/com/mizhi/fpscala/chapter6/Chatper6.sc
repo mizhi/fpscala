@@ -44,3 +44,12 @@ RNG.flatMap(RNG.ints2(2)) {
 }(sRNG)
 
 RNG.sequence2(List.fill(100)(RNG.nonNegativeLessThan(20)))(sRNG)
+
+// Exercise 6.9, p87
+RNG.mapV2(RNG.int)(_.toDouble)(sRNG)
+RNG.map(RNG.int)(_.toDouble)(sRNG)
+
+RNG.sequence2(List.fill(2)(RNG.nonNegativeLessThan(10)))(sRNG)
+
+RNG.map2V2(RNG.nonNegativeLessThan(10), RNG.nonNegativeLessThan(10))((x, y) => x * y)(sRNG)
+RNG.map2(RNG.nonNegativeLessThan(10), RNG.nonNegativeLessThan(10))((x, y) => x * y)(sRNG)
