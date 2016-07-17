@@ -37,3 +37,10 @@ RNG.ints3(4)(FakeRNG(0))
 
 RNG.sequence(List.fill(3)(RNG.int))(sRNG)
 RNG.sequence2(List.fill(3)(RNG.int))(sRNG)
+
+// Exercise 6.8, p87
+RNG.flatMap(RNG.ints2(2)) {
+  x => RNG.unit(x.map(_.toDouble))
+}(sRNG)
+
+RNG.sequence2(List.fill(100)(RNG.nonNegativeLessThan(20)))(sRNG)
