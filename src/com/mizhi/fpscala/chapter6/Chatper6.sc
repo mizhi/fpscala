@@ -21,10 +21,19 @@ RNG.ints(10)(sRNG)
 RNG.double2(sRNG)
 
 // Exercise 6.6, p85
-RNG.map2(RNG.int, RNG.int)(_*_)(sRNG)
+RNG.map2(RNG.int, RNG.int)(_ * _)(sRNG)
 
 // Exercise 6.7, p85
 RNG.sequence(List(RNG.unit(1), RNG.unit(2), RNG.unit(3)))(sRNG)
 RNG.sequence2(List(RNG.unit(1), RNG.unit(2), RNG.unit(3)))(sRNG)
 
-RNG.ints2(10)(sRNG)
+RNG.ints(4)(sRNG)
+RNG.ints2(4)(sRNG)
+RNG.ints3(4)(sRNG)
+
+RNG.ints(4)(FakeRNG(0))
+RNG.ints2(4)(FakeRNG(0))
+RNG.ints3(4)(FakeRNG(0))
+
+RNG.sequence(List.fill(3)(RNG.int))(sRNG)
+RNG.sequence2(List.fill(3)(RNG.int))(sRNG)

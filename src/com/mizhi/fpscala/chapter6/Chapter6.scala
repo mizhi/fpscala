@@ -45,13 +45,23 @@ object RNG {
     @tailrec
     def _ints(count: Int)(rng: RNG)(accum: List[Int]): (List[Int], RNG) = {
       if (count == 0) {
-        (accum, rng)
+        (accum.reverse, rng)
       } else {
         val (n, nrng) = rng.nextInt
         _ints(count - 1)(nrng)(n :: accum)
       }
     }
     _ints(count)(rng)(List())
+  }
+
+  def ints3(count: Int)(rng: RNG): (List[Int], RNG) = {
+    val (l, r) = (count to 1 by -1).foldRight((List.empty[Int], rng): (List[Int], RNG)) {
+      (n, res) => {
+        val (rn, nrng) = res._2.nextInt
+        (rn :: res._1, nrng)
+      }
+    }
+    (l, r)
   }
 
   type Rand[+A] = RNG => (A, RNG)
@@ -85,11 +95,15 @@ object RNG {
 
   // Exercise 6.7, p85
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = {
-    fs.foldRight(unit(List[A]()))((rnga, rngacc) => map2(rnga, rngacc)(_ :: _))
+    fs.foldRight(unit(List[A]())) {
+      (rnga, rngacc) => map2(rnga, rngacc)(_ :: _)
+    }
   }
 
   def sequence2[A](fs: List[Rand[A]]): Rand[List[A]] = {
-    map(fs.foldLeft(unit(List[A]()))((rnga, rngacc) => map2(rngacc, rnga)(_ :: _)))(_.reverse)
+    fs.reverse.foldLeft(unit(List[A]())) {
+      (rngacc, rnga) => map2(rnga, rngacc)(_ :: _)
+    }
   }
 
   def ints2(count: Int): Rand[List[Int]] = sequence2(List.fill(count)(int))
@@ -104,3 +118,8 @@ case class SimpleRNG(seed: Long) extends RNG {
   }
 }
 
+case class FakeRNG(seed: Long) extends RNG {
+  def nextInt: (Int, RNG) = {
+    (seed.toInt, FakeRNG(seed + 1))
+  }
+}
