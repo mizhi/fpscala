@@ -129,9 +129,8 @@ object RNG {
 
   // Exercise 6.9, p87
   def mapV2[A, B](ra: Rand[A])(f: A => B): Rand[B] = flatMap(ra)(x => unit(f(x)))
-  def map2V2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = flatMap(ra)(x => map(rb)(y => f(x, y)))
 
-  
+  def map2V2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = flatMap(ra)(x => map(rb)(y => f(x, y)))
 }
 
 case class SimpleRNG(seed: Long) extends RNG {
@@ -148,3 +147,39 @@ case class FakeRNG(seed: Long) extends RNG {
     (seed.toInt, FakeRNG(seed + 1))
   }
 }
+
+case class State[S, +A](run: S => (A, S)) {
+  def sequenceFR[S, A](fs: List[State[S, A]]): State[S, List[A]] = {
+    fs.foldRight(State.unit[S, List[A]](List.empty[A])) {
+      (ss, acc) => ss.map2(acc)(_ :: _)
+    }
+  }
+
+  def sequenceLP[S, A](fs: List[State[S, A]]): State[S, List[A]] = {
+    def _sequenceLP(s: S, fss: List[State[S, A]], acc: List[A]): (List[A], S) = {
+      fss match {
+        case Nil => (acc.reverse, s)
+        case h :: t => h.run(s) match { case (a, s2) => _sequenceLP(s2, t, a :: acc) }
+      }
+    }
+    State(s => _sequenceLP(s, fs, List()))
+  }
+  
+  def map[B](f: A => B): State[S, B] = flatMap(a => State.unit(f(a)))
+
+  def map2[B, C](rb: State[S, B])(f: (A, B) => C): State[S, C] = {
+    flatMap(a => rb.map(b => f(a, b)))
+  }
+
+  def flatMap[B](f: A => State[S, B]): State[S, B] = {
+    State(s => {
+      val (a, s1) = run(s)
+      f(a).run(s1)
+    })
+  }
+}
+
+object State {
+  def unit[S, A](a: A): State[S, A] = State(s => (a, s))
+}
+
